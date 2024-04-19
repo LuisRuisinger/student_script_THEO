@@ -1,0 +1,177 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl} % A4 paper and 11pt font size
+
+\usepackage[T1]{fontenc} % Use 8-bit encoding that has 256 glyphs
+\usepackage{fourier} % Use the Adobe Utopia font for the document - comment this line to return to the LaTeX default
+\usepackage[english]{babel} % English language/hyphenation
+\usepackage{amsmath,amsfonts,amsthm} % Math packages
+
+\usepackage{lipsum} % Used for inserting dummy 'Lorem ipsum' text into the template
+
+\usepackage{sectsty} % Allows customizing section commands
+\allsectionsfont{\centering \normalfont\scshape} % Make all sections centered, the default font and small caps
+\usepackage{tikz}
+\usepackage{fancyhdr} % Custom headers and footers
+\pagestyle{fancyplain} % Makes all pages in the document conform to the custom headers and footers
+\fancyhead{} % No page header - if you want one, create it in the same way as the footers below
+\fancyfoot[L]{} % Empty left footer
+\fancyfoot[C]{} % Empty center footer
+\fancyfoot[R]{\thepage} % Page numbering for right footer
+\renewcommand{\headrulewidth}{0pt} % Remove header underlines
+\renewcommand{\footrulewidth}{0pt} % Remove footer underlines
+\setlength{\headheight}{13.6pt} % Customize the height of the header
+
+\numberwithin{equation}{section} % Number equations within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{figure}{section} % Number figures within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+\numberwithin{table}{section} % Number tables within sections (i.e. 1.1, 1.2, 2.1, 2.2 instead of 1, 2, 3, 4)
+
+\setlength\parindent{0pt} % Removes all indentation from paragraphs - comment this line for an assignment with lots of text
+
+%----------------------------------------------------------------------------------------
+%	TITLE SECTION
+%----------------------------------------------------------------------------------------
+
+\newcommand{\horrule}[1]{\rule{\linewidth}{#1}} % Create horizontal rule command with 1 argument of height
+
+\title{	
+\normalfont \normalsize 
+\textsc{Technische Universitaet Muenchen, Analysis} \\ [25pt] % Your university, school and/or department name(s)
+\horrule{0.5pt} \\[0.4cm] % Thin top horizontal rule
+\huge Studentisches Skript \\ % The assignment title
+\horrule{2pt} \\[0.5cm] % Thick bottom horizontal rule
+}
+
+\author{Luis Simon Ruisinger} % Your name
+
+\date{\normalsize\today} % Today's date or a custom date
+
+\begin{document}
+
+\maketitle % Print the title
+
+%----------------------------------------------------------------------------------------
+%	PROBLEM 1
+%----------------------------------------------------------------------------------------
+
+\section{Grundbegriffe}
+
+- ein Alphabet $\Sigma$ ist eine endliche Menge\\
+- ein Wort/String ueber $\Sigma$ ist eine endliche Folge von Zeichen aus $\Sigma$\\
+- $|w|$ bezeichnet die Laenge eines Wortes $w$\\
+- das leere Wort wird mit $\epsilon$ bezeichnet\\
+- sind $u$ und $v$ Woerter so ist $uv$ ihre Konkatenation\\
+- ist $w$ ein Wort so ist $w^n$ definiert als $w^0=\epsilon$ und $w^{n+1}=ww^n$\\
+- eine Teilmenge $L\subseteq\Sigma^*$ ist eine (formale) Sprache\\
+
+\subsection{Operationen auf Sprachen}
+
+- Konkatenation: $AB=\{uv\ |\ u\in A\wedge v\in B\}$\\
+- Kreuzprodukt: $A\times B=\{(v,w)\ |\ u\in A\wedge v\in B\}$\\
+- $A^n=\{w_1\cdots w_n\ |\ w_1,\cdots,w_n\in A\}$\\
+- $A^*=\bigcup_{n\in\mathbb N}A^n$\\
+- $A^+=AA^*=\bigcup_{n\ge 1}A$\\
+- $\forall A.\ \epsilon\in A^*$\\
+- $\emptyset^*=\{\epsilon\}$\\
+- $\emptyset A=\emptyset$\\
+- $\{\epsilon\}A=A$\\
+- $A^*A^*=A^*$\\
+- $A(B\cup C)=AB\cup AC$\\
+- $(A\cup B)C=AC\cup BC$\\
+
+\subsection{Grammatiken}
+
+Eine Grammatik ist ein $4$-Tupel $G=(V,\Sigma,P,S)$, wobei\\
+
+- $V$ ist eine endliche Menge von Nichtterminalzeichen\\
+- $\Sigma$ ist eine endliche Menge von Terminalezeichen disjunkt von $V$, genannt das Alphabet\\
+- $P\subseteq(V\cup\Sigma)^*\times(V\cup\Sigma)^*$ ist eine Menge von Produktionen\\
+- $S\in V$ ist das Startsymbol
+
+\subsubsection{Ableitungsrelation}
+
+Eine Grammatik $G$ induziert eine Ableitungsrelation $\rightarrow_G$ ueber $V\cup\Sigma:$
+$$\alpha\rightarrow_G\alpha'$$
+gdw es eine Regel $\beta\rightarrow\beta'\in P$ und Woerter $\alpha_1,\alpha_2$ gibt, sodass
+$$\alpha=\alpha_1\beta\alpha_2\hspace{0.5cm}\text{und}\hspace{0.5cm}\alpha'=\alpha_1\beta'\alpha_2$$
+Eine Sequenz $\alpha_1\rightarrow_G\cdots\rightarrow_G\alpha_n$ ist eine Ableitung von $\alpha_n$ aus $\alpha_1$.\\
+Falls $\alpha_1=S$ und $\alpha_n\in\Sigma^*$, dann erzeugt $G$ das Wort $\alpha_n$.\\
+Die Sprache von $G$ ist die Menge aller Woerter, die von $G$ erzeugt werden. Sie werden mit $L(G)$ bezeichnet.
+
+\subsubsection{Die Chomsky-Hierachie}
+
+\[
+\begin{tabular}{|c|l|}
+\hline
+\textbf{Typ} & \textbf{Beschreibung} \\
+\hline
+0 & immer \\
+1 & falls fuer jede Produktion $\alpha\rightarrow\beta$ ausser $S\rightarrow\epsilon$ gilt $|\alpha|\leq|\beta|$ \\
+2 & falls $G$ vom Typ 1 ist und fuer jede Produktion $\alpha\rightarrow\beta.\ \alpha\in V$ \\
+3 & falls $G$ vom Typ 2 ist und fuer jede Produktion $\alpha\rightarrow\beta$ ausser $S\rightarrow\epsilon$ gilt $\beta\in\Sigma\cup\Sigma V$ \\
+\hline
+\end{tabular}
+\]\\
+
+Demnach gilt:
+$$\text{Typ 3}\hspace{0.5cm}\subset\hspace{0.5cm}\text{Typ 2}\hspace{0.5cm}\subset\hspace{0.5cm}\text{Typ 1}\hspace{0.5cm}\subset\hspace{0.5cm}\text{Typ 0}$$
+
+\subsubsection{Grammatiken und ihre erzeugten Sprachklassen}
+
+\[
+\begin{tabular}{|c|l|l|}
+\hline
+\textbf{Typ} & \textbf{Grammatik} & \textbf{Erzeugte Sprachklassen} \\
+\hline
+0 & Rechtslineare Grammatik & Regulaere Sprachen \\
+1 & Kontextfreie Grammatik & Kontextfreie Sprachen \\
+2 & Kontextsensitive Grammatik & Kontextsensitive Sprachen \\
+3 & Phasenstrukturgrammatik & Rekursiv aufzaehlbare Sprachen \\
+\hline
+\end{tabular}
+\]
+
+\newpage
+
+\section{Regulaere Sprachen}
+\usetikzlibrary{positioning}
+\[
+\begin{tikzpicture}
+    \node [rectangle, draw] (rechtslineare) {Rechtslineare Grammatiken};
+    \node [rectangle, draw, right=1cm of rechtslineare] (automaten) {Endliche Automaten};
+    \node [rectangle, draw, right=1cm of automaten] (ausdruecke) {Regulaere Ausdruecke};
+    \draw [->] (rechtslineare) -- (automaten);
+    \draw [->] (automaten) -- (ausdruecke);
+    \draw [->] (ausdruecke) -- (automaten);
+    \draw [->] (automaten) -- (rechtslineare);
+
+\end{tikzpicture}
+\]
+
+\subsection{Deterministischer endlicher Automat}
+
+Ein DFA $M=(Q,\Sigma,\delta,q_0,F)$ besteht aus\\
+
+- einer endlichen Menge von Zustaenden $Q$\\
+- einem (endlichen) Eingabealphabet $\Sigma$\\
+- einer Uebergangfunktion $\delta:Q\times\Sigma\rightarrow Q$\\
+- einem Startzustand $q_0\in Q$\\
+- einer Menge $F\subseteq Q$ von Endzustaenden (akzeptierten Zustaenden)\\
+
+Die von $M$ akzeptierte Sprache lautet 
+$$L(M):=\big\{w\in\Sigma^*\ |\ \hat\delta(q_0,w)\in F\big\}$$
+wobei $\hat\delta:Q\times\Sigma^*\rightarrow Q$ induktiv definiert ist durch 
+
+\[
+\begin{tabular}{r c l l}
+	$\hat\delta(q,\epsilon)$ & $=$ & $q$ &\\
+	$\hat\delta(q, aw)$ & $=$ & $\hat\delta(\delta(q, a), w)$ & fuer $a\in\Sigma, w\in\Sigma^*$
+\end{tabular}
+\]
+
+Eigenschaften von $\hat\delta:$\\
+
+- $\hat\delta(q,a)=\delta(q, a)$\\
+- $\hat\delta(q,wa)=\delta(\hat\delta(q,w),a)$\\
+
+Ein Uebergang in einen anderen Zustand ist definiert als
+$$p\stackrel{a}\rightarrow q\hspace{0.5cm}\widehat{=}\hspace{0.5cm}\delta(p,q)=q$$
+\end{document}
